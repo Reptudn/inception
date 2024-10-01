@@ -1,0 +1,32 @@
+version: '69'
+
+services:
+  mariadb:
+    restart: always
+    volumes:
+      - './requirements/mariadb/my.cnf:/etc/mysql/my.cnf'
+      - './requirements/mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql'
+    build:
+      context: './requirements/mariadb'
+      dockerfile: Dockerfile
+  wordpress:
+    restart: always
+    volumes:
+      - './requirements/wordpress/wp-config.php:/var/www/html/wp-config.php'
+    build:
+      context: './requirements/wordpress'
+      dockerfile: Dockerfile
+    depends_on:
+      - mariadb
+  nginx:
+    restart: always
+    volumes:
+      - './requirements/nginx/nginx.conf:/etc/nginx/nginx.conf'
+    build:
+      context: './requirements/nginx'
+      dockerfile: Dockerfile
+
+networks:
+  internal:
+    driver: bridge
+    
