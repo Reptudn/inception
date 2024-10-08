@@ -3,16 +3,19 @@ version: '69'
 services:
   mariadb:
     restart: always
+    networks:
+      - inception_network
     volumes:
-      - './requirements/mariadb/my.cnf:/etc/mysql/my.cnf'
-      - './requirements/mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql'
+      - db:mariadb/
     build:
       context: './requirements/mariadb'
       dockerfile: Dockerfile
   wordpress:
     restart: always
+    networks:
+      - inception_network
     volumes:
-      - './requirements/wordpress/wp-config.php:/var/www/html/wp-config.php'
+      - wordpress_vol:wordpress/
     build:
       context: './requirements/wordpress'
       dockerfile: Dockerfile
@@ -20,14 +23,28 @@ services:
       - mariadb
   nginx:
     restart: always
+    networks:
+      - inception_network
     volumes:
-      - './requirements/nginx/nginx.conf:/etc/nginx/nginx.conf'
+      - wordpress_vol:nginx/
     build:
       context: './requirements/nginx'
       dockerfile: Dockerfile
 
 networks:
-  internal:
+  inception_network:
     driver: bridge
-    
+volumes:
+  db:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./db_volume
+      o: bind
+  wordpress_vol:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./wordpress_volume
+      o: bind
     

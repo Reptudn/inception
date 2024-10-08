@@ -1,15 +1,27 @@
+COMPOSE := srcs/docker-compose.yml
 
-COMPOSE := "requirements/docker-compose.yml"
+volumes:
+	mkdir -p srcs/volumes/db_volume
+	mkdir -p srcs/volumes/wordpress_volume
+
+delete_vol:
+	rm -rf srcs/volumes
 
 run: $(COMPOSE)
-	docker-compose up -d --build
+	cd srcs && docker-compose up -d
 
 stop: $(COMPOSE)
-	docker-compose down
+	cs srcs && docker-compose down
 
-# remove all the containers aind images and volumes
-purge:
+up: run
+down: stop
+restart: down up
+
+# remove all the containers and images and volumes
+purge: $(COMPOSE) delete_vol
 	docker-compose down --rmi all --volumes
 
+re: purge all
 
-.PHONY
+
+all: volumes run
