@@ -15,7 +15,7 @@ services:
     networks:
       - inception_network
     volumes:
-      - wordpress_vol:wordpress/
+      - wordpress_vol:/var/www/html
     build:
       context: './requirements/wordpress'
       dockerfile: Dockerfile
@@ -39,12 +39,12 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ./db_volume
+      device: ./volumes/db_volume
       o: bind
   wordpress_vol:
     driver: local
     driver_opts:
       type: none
-      device: ./wordpress_volume
+      device: ./volumes/wordpress_volume
       o: bind
     

@@ -1,3 +1,3 @@
 FROM debian:bullseye
 
-RUN apt-get update
+RUN echo hi from wordpress
