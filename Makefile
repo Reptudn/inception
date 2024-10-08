@@ -19,7 +19,7 @@ restart: down up
 
 # remove all the containers and images and volumes
 purge: $(COMPOSE) delete_vol
-	docker-compose down --rmi all --volumes
+	cd srcs && docker-compose down --rmi all --volumes
 
 re: purge all
 

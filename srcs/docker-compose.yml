@@ -1,4 +1,4 @@
-version: '69'
+version: '3.8'
 
 services:
   mariadb:
@@ -6,7 +6,7 @@ services:
     networks:
       - inception_network
     volumes:
-      - db:mariadb/
+      - db
     build:
       context: './requirements/mariadb'
       dockerfile: Dockerfile
@@ -26,7 +26,7 @@ services:
     networks:
       - inception_network
     volumes:
-      - wordpress_vol:nginx/
+      - wordpress_vol
     build:
       context: './requirements/nginx'
       dockerfile: Dockerfile
