@@ -3,4 +3,5 @@ FROM debian:bullseye
 RUN apt-get update
 RUN apt-get install -y mariadb-server
 
-RUN echo hi from maria
+COPY conf /etc/mysql/conf.d
+
