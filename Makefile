@@ -21,6 +21,8 @@ restart: down up
 purge: $(COMPOSE) delete_vol
 	cd srcs && docker-compose down --rmi all --volumes
 
+fclean: purge
+
 re: purge all
 
 
