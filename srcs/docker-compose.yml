@@ -15,6 +15,8 @@ services:
     build:
       context: './requirements/mariadb'
       dockerfile: Dockerfile
+    env_file:
+      - .env
   nginx:
     restart: always
     networks:
@@ -26,6 +28,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "443:80" # host-port:docker-port
+    env_file:
+      - .env
+    depends_on:
+      - mariadb
   wordpress:
     restart: always
     networks:
@@ -38,10 +44,13 @@ services:
     depends_on:
       - nginx
       - mariadb
+    env_file:
+      - .env
 
 networks:
   inception_network:
     driver: bridge
+    name: inception_network
 volumes:
   db:
     driver: local
@@ -49,7 +58,7 @@ volumes:
       type: none
       device: ./volumes/db_volume
       o: bind
-  wordpress_vol:
+  wordpress:
     driver: local
     driver_opts:
       type: none
