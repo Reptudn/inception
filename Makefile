@@ -8,10 +8,10 @@ delete_vol:
 	rm -rf srcs/volumes
 
 run: $(COMPOSE)
-	cd srcs && docker-compose -p inception up -d
+	cd srcs && docker-compose up -d
 
 stop: $(COMPOSE)
-	cs srcs && docker-compose -p inception down
+	cs srcs && docker-compose down
 
 up: run
 down: stop

@@ -1,7 +1,5 @@
 #!bin/bash
 
-# php-fpm7.4 -F
-
 # wait for mysql to start
 sleep 10
 # Install Wordpress
@@ -44,5 +42,6 @@ if [ ! -f /var/www/html/wp-config.php ]; then
     # wp theme update impressionist
 fi
 
+php-fpm7.4 -F
 
-/usr/sbin/php-fpm7.3 -F
+# nginx -g "daemon off;"
