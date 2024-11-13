@@ -1,8 +1,6 @@
-
+#!bin/bash
 
 # php-fpm7.4 -F
-
-#!bin/bash
 
 # wait for mysql to start
 sleep 10
@@ -23,11 +21,11 @@ if [ ! -f /var/www/html/wp-config.php ]; then
 
     wp config set FORCE_SSL_ADMIN 'false' --allow-root
 
-    wp config  set WP_REDIS_HOST $redis_host --allow-root
+    wp config set WP_REDIS_HOST $redis_host --allow-root
 
     wp config set WP_REDIS_PORT $redis_port --allow-root
 
-    wp config  set WP_CACHE 'true' --allow-root
+    wp config set WP_CACHE 'true' --allow-root
 
     wp plugin install redis-cache --allow-root
 
