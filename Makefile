@@ -8,10 +8,10 @@ delete_vol:
 	rm -rf srcs/volumes
 
 run: $(COMPOSE)
-	cd srcs && docker-compose up -d
+	cd srcs && docker-compose -p inception up -d
 
 stop: $(COMPOSE)
-	cs srcs && docker-compose down
+	cs srcs && docker-compose -p inception down
 
 up: run
 down: stop
@@ -20,6 +20,7 @@ restart: down up
 # remove all the containers and images and volumes
 purge: $(COMPOSE) delete_vol
 	cd srcs && docker-compose down --rmi all --volumes
+	docker network prune -f
 
 fclean: purge
 

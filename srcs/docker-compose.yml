@@ -1,5 +1,24 @@
 version: '3.8'
 
+networks:
+  inception_network:
+    driver: bridge
+    name: inception_network
+volumes:
+  db:
+    driver: local
+    driver_opts:
+      type: none
+      device: /Users/${USER}/Documents/inception/srcs/volumes/db_volume
+      o: bind
+  wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      device: /Users/${USER}/Documents/inception/srcs/volumes/wordpress_volume
+      o: bind
+    
+
 services:
   mariadb:
     restart: always
@@ -54,28 +73,10 @@ services:
       WORDPRESS_DB_NAME: ${MARIA_DB_DATABASE_NAME}
       NORMAL_USER: ${WORDPRESS_USER}
       NORMAL_PASSWORD: ${WORDPRESS_PASSWORD}
+      NORMAL_EMAIL: ${WORDPRESS_EMAIL}
       ADMIN_USER: ${WORDPRESS_ADMIN_USER}
       ADMIN_PASSWORD: ${WORDPRESS_ADMIN_PASSWORD}
       ADMIN_EMAIL: ${WORDPRESS_ADMIN_EMAIL}
+      PAGE_TITLE: ${WORDPRESS_PAGE_TITLE}
       HOST: ${WORDPRESS_HOST}
       PORT: ${WORDPRESS_PORT}
-
-
-networks:
-  inception_network:
-    driver: bridge
-    name: inception_network
-volumes:
-  db:
-    driver: local
-    driver_opts:
-      type: none
-      device: /Users/${whoami}/Documents/inception/srcs/volumes/db_volume
-      o: bind
-  wordpress:
-    driver: local
-    driver_opts:
-      type: none
-      device: /Users/${whoami}/Documents/inception/srcs/volumes/wordpress_volume
-      o: bind
-    

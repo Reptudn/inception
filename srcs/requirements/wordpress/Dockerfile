@@ -35,11 +35,10 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     php-mysql \
     php-zip \
     php-redis \
-    curl \
-    vim && \
+    curl && \
     sed -i -e 's/listen =.*/listen = 9000/g' /etc/php/7.4/fpm/pool.d/www.conf
 
-RUN apt-get install -y sendmail
+# RUN apt-get install -y sendmail
 RUN mkdir -p /run/php
 
 WORKDIR /var/www/html
@@ -50,8 +49,7 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 
 RUN wp core download --allow-root
 
-COPY ./tools/ .
+COPY start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
 
-RUN chmod +x start.sh
-
-ENTRYPOINT ["bash", "start.sh"]
+ENTRYPOINT ["sh", "start.sh"]
