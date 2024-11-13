@@ -50,8 +50,10 @@ services:
       - "443:4242" # host-port:docker-port
     env_file:
       - .env
-    depends_on:
-      - mariadb
+    environment:
+      - DOMAIN=${WORDPRESS_HOST}
+    # depends_on:
+    #   - mariadb
   wordpress:
     restart: always
     networks:

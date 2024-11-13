@@ -11,7 +11,7 @@ run: $(COMPOSE)
 	cd srcs && docker-compose up -d
 
 stop: $(COMPOSE)
-	cs srcs && docker-compose down
+	cd srcs && docker-compose down
 
 up: run
 down: stop
