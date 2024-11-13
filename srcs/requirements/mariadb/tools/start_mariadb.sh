@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo service mysql start
+service mysql start
 
 mysqld
 
