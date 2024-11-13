@@ -25,7 +25,7 @@ services:
     networks:
       - inception_network
     volumes:
-      - db
+      - db:/var/lib/mysql # XXX: Set "use docker compose v2" to true in docker desktop
     environment:
       MYSQL_ROOT_USER: ${MARIA_DB_ROOT_USER}
       MYSQL_ROOT_PASSWORD: ${MARIA_DB_ROOT_USER}
@@ -47,7 +47,7 @@ services:
       context: './requirements/nginx'
       dockerfile: Dockerfile
     ports:
-      - "443:80" # host-port:docker-port
+      - "443:4242" # host-port:docker-port
     env_file:
       - .env
     depends_on:
