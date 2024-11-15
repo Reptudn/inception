@@ -1,18 +1,21 @@
-#!bin/bash
+#!/bin/bash
 
-# wait for mysql to start
-sleep 10
+# Create the /run/php directory if it doesn't exist
+mkdir -p /run/php
 
-echo Downloading Wordpress
 cd /var/www/html
 curl -o /usr/local/bin/wp -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x /usr/local/bin/wp
+wp core download --allow-root
 
-echo Installing Wordpress
-wp core download \
-	--allow-root
+# # wait for maria db
+# until nc -z -w50 mariadb 3306; do
+#     echo "Waiting for MariaDB to start..."
+#     sleep 1
+# done
 
-echo Creating wp-config.php
+sleep 10
+
 wp config create \
     --dbname=$WORDPRESS_DB_NAME \
     --dbuser=$WORDPRESS_DB_USER \
@@ -20,31 +23,25 @@ wp config create \
     --dbhost=$WORDPRESS_DB_HOST \
     --allow-root
 
-echo Adding Wordpress admin user
 wp core install \
-	--url=$HOST \
-	--title=$PAGE_TITLE \
-	--admin_user=$ADMIN_USER \
-	--admin_password=$ADMIN_PASSWORD \
-	--admin_email=$ADMIN_EMAIL \
-	--allow-root
+    --url=$HOST \
+    --title=$PAGE_TITLE \
+    --admin_user=$ADMIN_USER \
+    --admin_password=$ADMIN_PASSWORD \
+    --admin_email=$ADMIN_EMAIL \
+    --allow-root
 
-echo Adding normal user
 wp user create \
-	$NORMAL_USER \
-	$NORMAL_EMAIL \
-	--role=author \
-	--user_pass=$NORMAL_PASSWORD \
-	--allow-root
+    $NORMAL_USER \
+    $NORMAL_EMAIL \
+    --role=author \
+    --user_pass=$NORMAL_PASSWORD \
+    --allow-root
 
-echo Installing plugins
-wp plugin update \
-	--all \
-	--allow-root
+wp plugin install redis-cache --activate --allow-root
+wp plugin update --all --allow-root
 
 chown -R www-data:www-data /var/www/html
 
-ls -la /var/www/html
-
-echo Starting php-fpm
+# Start PHP-FPM
 php-fpm7.4 -F
