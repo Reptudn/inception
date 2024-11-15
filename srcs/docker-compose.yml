@@ -4,19 +4,20 @@ networks:
   inception_network:
     driver: bridge
     name: inception_network
+
 volumes:
   db:
     driver: local
-    driver_opts:
-      type: none
-      device: /Users/${USER}/Documents/inception/srcs/volumes/db
-      o: bind
+    # driver_opts:
+    #   type: none
+    #   device: /Users/${USER}/Documents/inception/srcs/volumes/db
+    #   o: bind
   wordpress:
     driver: local
-    driver_opts:
-      type: none
-      device: /Users/${USER}/Documents/inception/srcs/volumes/wordpress
-      o: bind
+    # driver_opts:
+    #   type: none
+    #   device: /Users/${USER}/Documents/inception/srcs/volumes/wordpress
+    #   o: bind
 
 services:
   mariadb:
