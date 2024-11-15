@@ -1,13 +1,24 @@
 #!/bin/bash
 
-# service mysql start
+# Initialize MariaDB data directory if it's empty
+if [ ! -d "/var/lib/mysql/mysql" ]; then
+    mysql_install_db --user=mysql --datadir=/var/lib/mysql
+fi
 
-# mysqld
+# Start MariaDB
+/usr/bin/mysqld_safe --datadir=/var/lib/mysql &
 
-# sleep 5
+# Wait for MariaDB to start
+until mysqladmin ping >/dev/null 2>&1; do
+    echo "Waiting for MariaDB to be ready..."
+    sleep 1
+done
 
-# echo db name is $MARIA_DB_DATABASE_NAME
+# Create database and user
+mysql -e "CREATE DATABASE IF NOT EXISTS ${DB_NAME};"
+mysql -e "CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';"
+mysql -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%';"
+mysql -e "FLUSH PRIVILEGES;"
 
-# mysql -u root -e "CREATE DATABASE IF NOT EXISTS $MARIA_DB_DATABASE_NAME"
-
-# tail -f /dev/null
+# Keep the container running
+tail -f /dev/null
