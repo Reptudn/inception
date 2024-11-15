@@ -19,6 +19,8 @@ volumes:
     #   device: /Users/${USER}/Documents/inception/srcs/volumes/wordpress
     #   o: bind
 
+# TODO: use secrets instead of env_file or environment
+
 services:
   mariadb:
     restart: always
@@ -37,6 +39,8 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env
+    ports:
+      - "3306:3306" # host-port:docker-port
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       interval: 10s
@@ -76,7 +80,6 @@ services:
       context: './requirements/wordpress'
       dockerfile: Dockerfile
     depends_on:
-      - nginx
       - mariadb
     env_file:
       - .env

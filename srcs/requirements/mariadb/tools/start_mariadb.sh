@@ -1,20 +1,18 @@
 #!/bin/bash
 
-# Initialize MariaDB data directory if it's empty
-if [ ! -d "/var/lib/mysql/mysql" ]; then
-    mysql_install_db --user=mysql --datadir=/var/lib/mysql
-fi
+# Create the /run/mysqld directory if it doesn't exist
+mkdir -p /run/mysqld
+chown mysql:mysql /run/mysqld
 
-# Start MariaDB
-/usr/bin/mysqld_safe --datadir=/var/lib/mysql &
+# Start MariaDB in the background
+mysqld
 
-# Wait for MariaDB to start
-until mysqladmin ping >/dev/null 2>&1; do
-    echo "Waiting for MariaDB to be ready..."
+echo "Waiting for MariaDB to be ready..."
+until mysqladmin ping; do
     sleep 1
 done
 
-# Create database and user
+# Run your SQL commands
 mysql -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};"
 mysql -e "CREATE USER IF NOT EXISTS '${MYSQL_ROOT_USER}'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
 mysql -e "GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_ROOT_USER}'@'%' WITH GRANT OPTION;"
