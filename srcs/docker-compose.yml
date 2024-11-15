@@ -9,13 +9,13 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /Users/${USER}/Documents/inception/srcs/volumes/db_volume
+      device: /Users/${USER}/Documents/inception/srcs/volumes/db
       o: bind
   wordpress:
     driver: local
     driver_opts:
       type: none
-      device: /Users/${USER}/Documents/inception/srcs/volumes/wordpress_volume
+      device: /Users/${USER}/Documents/inception/srcs/volumes/wordpress
       o: bind
 
 services:
