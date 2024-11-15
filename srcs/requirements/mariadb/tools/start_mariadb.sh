@@ -15,9 +15,9 @@ until mysqladmin ping >/dev/null 2>&1; do
 done
 
 # Create database and user
-mysql -e "CREATE DATABASE IF NOT EXISTS ${DB_NAME};"
-mysql -e "CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';"
-mysql -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%';"
+mysql -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};"
+mysql -e "CREATE USER IF NOT EXISTS '${MYSQL_ROOT_USER}'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
+mysql -e "GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_ROOT_USER}'@'%' WITH GRANT OPTION;"
 mysql -e "FLUSH PRIVILEGES;"
 
 # Keep the container running

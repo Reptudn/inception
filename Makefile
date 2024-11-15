@@ -1,30 +1,32 @@
-COMPOSE := srcs/docker-compose.yml
+COMPOSE := docker-compose.yml
 
-volumes:
-	mkdir -p srcs/volumes/db_volume
-	mkdir -p srcs/volumes/wordpress_volume
+make_volumes:
+	mkdir -p srcs/volumes
+	mkdir -p srcs/volumes/db
+	mkdir -p srcs/volumes/wordpress
 
 delete_vol:
 	rm -rf srcs/volumes
 
-run: $(COMPOSE)
-	cd srcs && docker-compose up -d
+run: delete_vol make_volumes srcs/$(COMPOSE)
+	cd srcs && docker compose -f $(COMPOSE) up -d --remove-orphans --force-recreate
 
-stop: $(COMPOSE)
-	cd srcs && docker-compose down
+stop: srcs/$(COMPOSE)
+	cd srcs && docker compose down
 
 up: run
 down: stop
 restart: down up
 
 # remove all the containers and images and volumes
-purge: $(COMPOSE) delete_vol
-	cd srcs && docker-compose down --rmi all --volumes
+purge: srcs/$(COMPOSE) delete_vol
+	cd srcs && docker compose -f $(COMPOSE) down --rmi all --volumes
 	docker network prune -f
 
-fclean: purge
+fclean: delete_vol purge
 
 re: purge all
 
+all: delete_vol make_volumes run
 
-all: volumes run
+.PHONY: all down up run stop purge fclean re delete_vol
