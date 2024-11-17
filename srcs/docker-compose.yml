@@ -42,7 +42,7 @@ services:
     ports:
       - "3306:3306" # host-port:docker-port
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "mariadb"]
       interval: 10s
       timeout: 30s
       retries: 3
@@ -58,14 +58,14 @@ services:
       dockerfile: Dockerfile
     ports:
       - "443:4242" # host-port:docker-port
+      - "80:4242"
+
     env_file:
       - .env
     environment:
       - DOMAIN=${WORDPRESS_HOST}
-    depends_on:
-      - mariadb
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:443"]
+      test: ["CMD", "curl", "-f", "http://nginx:443"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -81,6 +81,7 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - mariadb
+      - nginx
     env_file:
       - .env
     environment:
@@ -98,7 +99,7 @@ services:
       HOST: ${WORDPRESS_HOST}
       PORT: ${WORDPRESS_PORT}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:443"]
+      test: ["CMD", "curl", "-f", "http://wordpress:9000"]
       interval: 10s
       timeout: 5s
       retries: 3
