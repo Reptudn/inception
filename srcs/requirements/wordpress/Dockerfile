@@ -22,7 +22,8 @@ RUN apt update && apt upgrade -y && apt install -y \
 	curl \
 	netcat
 
-COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
+# COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
+COPY conf/www.conf /var/www/html/wp-config.php
 
 # needed to create the pid file
 RUN mkdir /run/php

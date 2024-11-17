@@ -8,13 +8,18 @@ curl -o /usr/local/bin/wp -O https://raw.githubusercontent.com/wp-cli/builds/gh-
 chmod +x /usr/local/bin/wp
 wp core download --allow-root
 
-# # wait for maria db
-# until nc -z -w50 mariadb 3306; do
-#     echo "Waiting for MariaDB to start..."
-#     sleep 1
-# done
+# wait for maria db
+until nc -z -w50 mariadb 3306; do
+    echo "Waiting for MariaDB to start..."
+    sleep 1
+done
 
 sleep 10
+
+echo deez nuts
+
+pwd
+ls -la
 
 wp config create \
     --dbname=$WORDPRESS_DB_NAME \
@@ -22,6 +27,8 @@ wp config create \
     --dbpass=$WORDPRESS_DB_PASSWORD \
     --dbhost=$WORDPRESS_DB_HOST \
     --allow-root
+
+echo deez nuts2
 
 wp core install \
     --url=$HOST \
@@ -38,8 +45,8 @@ wp user create \
     --user_pass=$NORMAL_PASSWORD \
     --allow-root
 
-wp plugin install redis-cache --activate --allow-root
-wp plugin update --all --allow-root
+# wp plugin install redis-cache --activate --allow-root
+# wp plugin update --all --allow-root
 
 chown -R www-data:www-data /var/www/html
 
