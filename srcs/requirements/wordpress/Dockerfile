@@ -31,4 +31,6 @@ RUN mkdir /run/php
 COPY tools/start_wordpress.sh start_wordpress.sh
 RUN chmod +x start_wordpress.sh
 
+EXPOSE 443
+
 CMD [ "sh", "/start_wordpress.sh" ]
