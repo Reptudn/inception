@@ -9,26 +9,39 @@ chmod +x /usr/local/bin/wp
 wp core download --allow-root
 
 # wait for maria db
-until nc -z -w50 mariadb 3306; do
-    echo "Waiting for MariaDB to start..."
-    sleep 1
-done
+# until nc -z -w50 mariadb 3306; do
+#     echo "Waiting for MariaDB to start..."
+#     sleep 1
+# done
 
-sleep 10
+php-fpm7.4 -F &
 
-echo deez nuts
+echo $WORDPRESS_DB_HOST
+echo $WORDPRESS_DB_USER
+echo $WORDPRESS_DB_PASSWORD
+echo $WORDPRESS_DB_NAME
+echo $HOST
+echo $PAGE_TITLE
+echo $ADMIN_USER
+echo $ADMIN_PASSWORD
+echo $ADMIN_EMAIL
+echo $NORMAL_USER
+echo $NORMAL_EMAIL
+echo $NORMAL_PASSWORD
 
-pwd
-ls -la
+# wp config create \
+#     --dbname=$WORDPRESS_DB_NAME \
+#     --dbuser=$WORDPRESS_DB_USER \
+#     --dbpass=$WORDPRESS_DB_PASSWORD \
+#     --dbhost=$WORDPRESS_DB_HOST \
+#     --allow-root
 
 wp config create \
-    --dbname=$WORDPRESS_DB_NAME \
-    --dbuser=$WORDPRESS_DB_USER \
-    --dbpass=$WORDPRESS_DB_PASSWORD \
-    --dbhost=$WORDPRESS_DB_HOST \
+    --dbname=wordpress \
+    --dbuser=master \
+    --dbpass=mainframe \
+    --dbhost=mariadb:3306 \
     --allow-root
-
-echo deez nuts2
 
 wp core install \
     --url=$HOST \
@@ -50,5 +63,4 @@ wp user create \
 
 chown -R www-data:www-data /var/www/html
 
-# Start PHP-FPM
-php-fpm7.4 -F
+tail -f /dev/null
