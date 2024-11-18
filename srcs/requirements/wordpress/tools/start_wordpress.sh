@@ -17,9 +17,9 @@ wp core download --allow-root
 php-fpm7.4 -F &
 
 echo $WORDPRESS_DB_HOST
-echo $WORDPRESS_DB_USER
-echo $WORDPRESS_DB_PASSWORD
-echo $WORDPRESS_DB_NAME
+echo root user for db is: $WORDPRESS_DB_USER
+echo root user pass is: $WORDPRESS_DB_PASSWORD
+echo root user for db is: $WORDPRESS_DB_NAME
 echo $HOST
 echo $PAGE_TITLE
 echo $ADMIN_USER
