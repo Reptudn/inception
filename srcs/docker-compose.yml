@@ -5,6 +5,7 @@ networks:
     driver: bridge
     name: inception_network
 
+# TODO: implement volume binding on specific folder
 volumes:
   db:
     driver: local
@@ -30,7 +31,7 @@ services:
       - db:/var/lib/mysql
     environment:
       MYSQL_ROOT_USER: ${MARIA_DB_ROOT_USER}
-      MYSQL_ROOT_PASSWORD: ${MARIA_DB_ROOT_USER}
+      MYSQL_ROOT_PASSWORD: ${MARIA_DB_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MARIA_DB_DATABASE_NAME}
       MYSQL_USER:  ${MARIA_DB_USER}
       MYSQL_PASSWORD: ${MARIA_DB_PASSWORD}
@@ -39,14 +40,11 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env
-    ports:
-      - "3306:3306" # host-port:docker-port
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "mariadb"]
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       interval: 10s
       timeout: 30s
       retries: 3
-      start_period: 30s
   nginx:
     restart: always
     networks:
@@ -57,15 +55,13 @@ services:
       context: './requirements/nginx'
       dockerfile: Dockerfile
     ports:
-      - "443:4242" # host-port:docker-port
-      - "80:4242"
-
+      - "443:443" # host-port:docker-port
     env_file:
       - .env
     environment:
       - DOMAIN=${WORDPRESS_HOST}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://nginx:443"]
+      test: ["CMD", "curl", "-f", "http://localhost:443"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -85,7 +81,7 @@ services:
     env_file:
       - .env
     environment:
-      WORDPRESS_DB_HOST: mariadb:3306
+      WORDPRESS_DB_HOST: localhost:3306
       WORDPRESS_DB_USER: ${MARIA_DB_ROOT_USER}
       WORDPRESS_DB_PASSWORD: ${MARIA_DB_ROOT_PASSWORD}
       WORDPRESS_DB_NAME: ${MARIA_DB_DATABASE_NAME}
@@ -99,7 +95,7 @@ services:
       HOST: ${WORDPRESS_HOST}
       PORT: ${WORDPRESS_PORT}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://wordpress:9000"]
+      test: ["CMD", "curl", "-f", "http://localhost:9000"]
       interval: 10s
       timeout: 5s
       retries: 3

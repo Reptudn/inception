@@ -6,31 +6,18 @@ mkdir -p /run/php
 cd /var/www/html
 curl -o /usr/local/bin/wp -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x /usr/local/bin/wp
-wp core download --allow-root
-
-# wait for maria db
-until nc -z -w50 mariadb 3306; do
-    echo "Waiting for MariaDB to start..."
-    sleep 1
-done
-
-sleep 10
-
-echo deez nuts
-
-pwd
 ls -la
 
-wp config create \
+/usr/local/bin/wp core download --allow-root
+
+/usr/local/bin/wp config create \
     --dbname=$WORDPRESS_DB_NAME \
     --dbuser=$WORDPRESS_DB_USER \
     --dbpass=$WORDPRESS_DB_PASSWORD \
     --dbhost=$WORDPRESS_DB_HOST \
     --allow-root
 
-echo deez nuts2
-
-wp core install \
+/usr/local/bin/wp core install \
     --url=$HOST \
     --title=$PAGE_TITLE \
     --admin_user=$ADMIN_USER \
@@ -38,7 +25,7 @@ wp core install \
     --admin_email=$ADMIN_EMAIL \
     --allow-root
 
-wp user create \
+/usr/local/bin/wp user create \
     $NORMAL_USER \
     $NORMAL_EMAIL \
     --role=author \
