@@ -5,11 +5,7 @@ mkdir -p /run/mysqld
 chown mysql:mysql /run/mysqld
 
 # Start MariaDB in the background
-<<<<<<< HEAD
 mysqld --init-file=/etc/mysql/init.sql
-=======
-mysqld &
->>>>>>> 843445b9cd0c102af1689cecacc1ab765a82616f
 
 echo "Waiting for MariaDB to be ready..."
 until mysqladmin ping; do
