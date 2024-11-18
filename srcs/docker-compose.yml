@@ -81,7 +81,7 @@ services:
     env_file:
       - .env
     environment:
-      WORDPRESS_DB_HOST: localhost:3306
+      WORDPRESS_DB_HOST: mariadb:3306
       WORDPRESS_DB_USER: ${MARIA_DB_ROOT_USER}
       WORDPRESS_DB_PASSWORD: ${MARIA_DB_ROOT_PASSWORD}
       WORDPRESS_DB_NAME: ${MARIA_DB_DATABASE_NAME}
