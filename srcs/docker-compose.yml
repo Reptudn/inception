@@ -34,7 +34,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MARIA_DB_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MARIA_DB_DATABASE_NAME}
       MYSQL_USER:  ${MARIA_DB_USER}
-      MYSQL_PASSWORD: ${MARIA_DB_PASSWORD}
+      MYSQL_PASSWORD: ${MARIA_DB_ROOT_PASSWORD}
     build:
       context: './requirements/mariadb'
       dockerfile: Dockerfile
