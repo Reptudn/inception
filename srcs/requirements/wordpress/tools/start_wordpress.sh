@@ -6,9 +6,16 @@ mkdir -p /run/php
 cd /var/www/html
 curl -o /usr/local/bin/wp -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x /usr/local/bin/wp
-ls -la
 
 /usr/local/bin/wp core download --allow-root
+
+echo "Waiting for MariaDB to start..."
+until nc -z -w50 mariadb 3306
+do
+	echo "Waiting for MariaDB to start..."
+	sleep 1
+done
+echo "MariaDB is ready!"
 
 /usr/local/bin/wp config create \
     --dbname=$WORDPRESS_DB_NAME \
@@ -37,4 +44,6 @@ ls -la
 
 chown -R www-data:www-data /var/www/html
 
-tail -f /dev/null
+ls -la
+
+php-fpm7.4 -F
