@@ -1,49 +1,33 @@
 #!/bin/bash
 
-# Create the /run/php directory if it doesn't exist
-mkdir -p /run/php
+wget https://wordpress.org/latest.tar.gz
+tar -xvf latest.tar.gz
+mv wordpress/* /var/www/html/
+chown -R www-data:www-data /var/www/html/
+chmod -R 755 /var/www/html/
 
-cd /var/www/html
-curl -o /usr/local/bin/wp -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-chmod +x /usr/local/bin/wp
+cd /var/www/html/
 
-/usr/local/bin/wp core download --allow-root
-
-echo "Waiting for MariaDB to start..."
-until nc -z -w50 mariadb 3306
-do
-	echo "Waiting for MariaDB to start..."
-	sleep 1
+until mysqladmin ping -h mariadb --silent; do
+    echo "Waiting for database connection..."
+    sleep 2
 done
-echo "MariaDB is ready!"
 
-/usr/local/bin/wp config create \
-    --dbname=$WORDPRESS_DB_NAME \
-    --dbuser=$WORDPRESS_DB_USER \
-    --dbpass=$WORDPRESS_DB_PASSWORD \
-    --dbhost=$WORDPRESS_DB_HOST \
+wp config create \
+    --dbname=$MARIA_DB_DATABASE_NAME \
+    --dbuser=$MARIA_DB_ROOT_USER \
+    --dbpass=$MARIA_DB_ROOT_PASSWORD \
+    --dbhost="mariadb:3306" \
+    --path=/var/www/html/ \
     --allow-root
 
-/usr/local/bin/wp core install \
-    --url=$HOST \
-    --title=$PAGE_TITLE \
-    --admin_user=$ADMIN_USER \
-    --admin_password=$ADMIN_PASSWORD \
-    --admin_email=$ADMIN_EMAIL \
+wp core install \
+    --url="localhost:9000" \
+    --title="Inception Blog" \
+    --admin_user="$WORDPRESS_ADMIN_USER" \
+    --admin_password="$WORDPRESS_ADMIN_PASSWORD" \
+    --admin_email="$WORDPRESS_ADMIN_EMAIL" \
+    --path=/var/www/html/ \
     --allow-root
-
-/usr/local/bin/wp user create \
-    $NORMAL_USER \
-    $NORMAL_EMAIL \
-    --role=author \
-    --user_pass=$NORMAL_PASSWORD \
-    --allow-root
-
-# wp plugin install redis-cache --activate --allow-root
-# wp plugin update --all --allow-root
-
-chown -R www-data:www-data /var/www/html
-
-ls -la
 
 php-fpm7.4 -F

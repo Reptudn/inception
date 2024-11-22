@@ -2,8 +2,6 @@ version: '3.8'
 
 networks:
   inception_network:
-    driver: bridge
-    name: inception_network
 
 # TODO: implement volume binding on specific folder
 volumes:
@@ -29,12 +27,6 @@ services:
       - inception_network
     volumes:
       - db:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_USER: ${MARIA_DB_ROOT_USER}
-      MYSQL_ROOT_PASSWORD: ${MARIA_DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MARIA_DB_DATABASE_NAME}
-      MYSQL_USER:  ${MARIA_DB_USER}
-      MYSQL_PASSWORD: ${MARIA_DB_ROOT_PASSWORD}
     build:
       context: './requirements/mariadb'
       dockerfile: Dockerfile
@@ -59,8 +51,6 @@ services:
       - "80:80"
     env_file:
       - .env
-    environment:
-      - DOMAIN=${WORDPRESS_HOST}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:443"]
       interval: 10s
@@ -81,23 +71,9 @@ services:
       - nginx
     env_file:
       - .env
-    environment:
-      WORDPRESS_DB_HOST: mariadb:3306
-      WORDPRESS_DB_USER: ${MARIA_DB_ROOT_USER}
-      WORDPRESS_DB_PASSWORD: ${MARIA_DB_ROOT_PASSWORD}
-      WORDPRESS_DB_NAME: ${MARIA_DB_DATABASE_NAME}
-      NORMAL_USER: ${WORDPRESS_USER}
-      NORMAL_PASSWORD: ${WORDPRESS_PASSWORD}
-      NORMAL_EMAIL: ${WORDPRESS_EMAIL}
-      ADMIN_USER: ${WORDPRESS_ADMIN_USER}
-      ADMIN_PASSWORD: ${WORDPRESS_ADMIN_PASSWORD}
-      ADMIN_EMAIL: ${WORDPRESS_ADMIN_EMAIL}
-      PAGE_TITLE: ${WORDPRESS_PAGE_TITLE}
-      HOST: ${WORDPRESS_HOST}
-      PORT: ${WORDPRESS_PORT}
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:9000"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 3
+    #   start_period: 30s
