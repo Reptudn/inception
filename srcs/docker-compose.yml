@@ -33,10 +33,11 @@ services:
     env_file:
       - .env
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
-      timeout: 30s
-      retries: 3
+      timeout: 5s
+      retries: 5
+      start_period: 30s
   nginx:
     restart: always
     networks:
@@ -51,12 +52,14 @@ services:
       - "80:80"
     env_file:
       - .env
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:443"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
+    depends_on:
+      - wordpress
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:443"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 3
+    #   start_period: 30s
   wordpress:
     restart: always
     networks:
@@ -67,8 +70,8 @@ services:
       context: './requirements/wordpress'
       dockerfile: Dockerfile
     depends_on:
-      - mariadb
-      - nginx
+      mariadb:
+        condition: service_healthy
     env_file:
       - .env
     # healthcheck:

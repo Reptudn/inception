@@ -1,30 +1,43 @@
 #!/bin/bash
 
-# Create the /run/mysqld directory if it doesn't exist
-mkdir -p /run/mysqld
-chown mysql:mysql /run/mysqld
+# Environment variables
+DB_NAME=${MARIA_DB_DATABASE_NAME:-wordpress_db}
+DB_USER=${MARIA_DB_ROOT_USER:-wordpress_user}
+DB_PASSWORD=${MARIA_DB_ROOT_PASSWORD:-wordpress_password}
+DB_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root_password}
 
-# Start MariaDB in the background
-mysqld & # --init-file=/etc/mysql/init.sql &
+# Initialize MariaDB data directory if it doesn't exist
+if [ ! -d "/var/lib/mysql/mysql" ]; then
+    echo "Initializing MariaDB data directory..."
+    mysql_install_db --user=mysql --ldata=/var/lib/mysql > /dev/null 2>&1
+fi
 
-echo "Waiting for MariaDB to be ready..."
-# Add a delay to ensure MariaDB has time to start
-sleep 10
+# Start MariaDB in the background for initial setup
+echo "Starting MariaDB..."
+mysqld_safe --bind-address=0.0.0.0 &
+sleep 10  # Give MariaDB time to start
 
-# Improved readiness check
+# Wait until MariaDB is up and running
 until mysqladmin ping --silent; do
-    echo "Waiting for database connection..."
+    echo "Waiting for MariaDB to be ready..."
     sleep 2
 done
 
-echo "MariaDB is ready!"
-echo "Creating database ${MARIA_DB_DATABASE_NAME}..."
-mysql -e "CREATE DATABASE IF NOT EXISTS ${MARIA_DB_DATABASE_NAME};"
-mysql -e "CREATE USER IF NOT EXISTS '${MARIA_DB_ROOT_USER}'@'%' IDENTIFIED BY '${MARIA_DB_ROOT_PASSWORD}';"
-mysql -e "GRANT ALL PRIVILEGES ON ${MARIA_DB_DATABASE_NAME}.* TO '${MARIA_DB_ROOT_USER}'@'%' WITH GRANT OPTION;"
-mysql -e "FLUSH PRIVILEGES;"
+# Set up the database and user only if it hasn't been done yet
+if [ ! -f /var/lib/mysql/.setup_done ]; then
+    echo "Configuring MariaDB for WordPress..."
+    mysql -u root <<MYSQL_SCRIPT
+    ALTER USER 'root'@'localhost' IDENTIFIED BY '$DB_ROOT_PASSWORD';
+    CREATE DATABASE IF NOT EXISTS \`$DB_NAME\`;
+    CREATE USER IF NOT EXISTS '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWORD';
+    GRANT ALL PRIVILEGES ON \`$DB_NAME\`.* TO '$DB_USER'@'%';
+    FLUSH PRIVILEGES;
+MYSQL_SCRIPT
 
-echo "Database ${MARIA_DB_DATABASE_NAME} created!"
+    touch /var/lib/mysql/.setup_done  # Prevent rerunning the setup
+fi
 
-# Keep the container running
-tail -f /dev/null
+echo "MariaDB setup complete. Running in the foreground..."
+
+# Keep MariaDB running in the foreground
+wait
