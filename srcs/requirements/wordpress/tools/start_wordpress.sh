@@ -19,6 +19,17 @@ wp config create \
     --path=/var/www/html/ \
     --allow-root
 
+echo Adding redis vars to wp-config.php...
+wp config set WP_REDIS_HOST redis --add \
+    --type=constant \
+    --path=/var/www/html/ \
+    --allow-root
+
+wp config set WP_REDIS_PORT 6379 --add \
+    --type=constant \
+    --path=/var/www/html/ \
+    --allow-root
+
 echo Installing WordPress...
 wp core install \
     --url="localhost" \
@@ -36,6 +47,15 @@ wp user create \
     --role=author \
     --path=/var/www/html/ \
     --allow-root
+
+#enable redis cache
+wp plugin install redis-cache \
+    --activate \
+    --path=/var/www/html/ \
+    --allow-root
+
+#enable redis cache
+wp redis enable --path=/var/www/html/ --allow-root
 
 # echo "Configuring PHP-FPM to listen on 0.0.0.0:9000..."
 sed -i 's/listen = .*/listen = 0.0.0.0:9000/' /etc/php/7.4/fpm/pool.d/www.conf

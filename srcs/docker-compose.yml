@@ -65,6 +65,8 @@ services:
     depends_on:
       mariadb:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
       - MARIA_DB_ROOT_USER=${MARIA_DB_ROOT_USER}
       - MARIA_DB_ROOT_PASSWORD=${MARIA_DB_ROOT_PASSWORD}
@@ -75,6 +77,19 @@ services:
       - WORDPRESS_TEST_USER=${WORDPRESS_TEST_USER}
       - WORDPRESS_TEST_USER_PASSWORD=${WORDPRESS_TEST_USER_PASSWORD}
       - WORDPRESS_TEST_USER_EMAIL=${WORDPRESS_TEST_USER_EMAIL}
+  redis:
+    restart: always
+    networks:
+      - inception_network
+    build:
+      context: './requirements/bonus/redis'
+      dockerfile: Dockerfile
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
   ftp:
     restart: always
     networks:
@@ -97,8 +112,10 @@ services:
       nginx:
         condition: service_started
   adminer:
-    image: adminer # TODO: replace with custom image with adminer
     restart: always
+    build:
+      context: './requirements/bonus/adminer'
+      dockerfile: Dockerfile
     networks:
       - inception_network
     ports:
