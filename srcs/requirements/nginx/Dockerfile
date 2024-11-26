@@ -8,9 +8,8 @@ COPY www /var/www/html
 COPY tools/start_nginx.sh /start_nginx.sh
 
 # COPY tools/nginx.conf /etc/nginx/conf.d/default.conf
-COPY tools/nginx_default.conf /etc/nginx/nginx.conf
-COPY tools/nginx.conf /etc/nginx/conf.d/default.conf
-
+COPY tools/nginx.conf /etc/nginx/nginx.conf
+COPY tools/default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 EXPOSE 443

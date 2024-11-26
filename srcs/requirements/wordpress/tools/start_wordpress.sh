@@ -21,7 +21,7 @@ wp config create \
 
 echo Installing WordPress...
 wp core install \
-    --url="wordpress:9000" \
+    --url="localhost" \
     --title="Inception Blog" \
     --admin_user="$WORDPRESS_ADMIN_USER" \
     --admin_password="$WORDPRESS_ADMIN_PASSWORD" \
@@ -31,6 +31,9 @@ wp core install \
 
 pwd
 ls -la
+
+# echo "Configuring PHP-FPM to listen on 0.0.0.0:9000..."
+sed -i 's/listen = .*/listen = 0.0.0.0:9000/' /etc/php/7.4/fpm/pool.d/www.conf
 
 echo Starting PHP-FPM...
 php-fpm7.4 -F
