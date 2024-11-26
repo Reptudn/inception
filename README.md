@@ -18,7 +18,7 @@ This project aims to broaden your knowledge of system administration by using Do
 - [x] ftp server to wordpress volume
 - [x] static website (without PHP ooooh nooo 😔)
 - [x] adminer
-- [ ] custom useful service (probably grafana)
+- [x] custom useful service (probably grafana (no we just use cadvisor))
 
 ## Login for Adminer
 System: MySQL
