@@ -17,8 +17,7 @@ volumes:
     #   type: none
     #   device: /home/${USER}/data
     #   o: bind
-
-# TODO: use secrets instead of env_file or environment
+  # grafana-data:
 
 services:
   mariadb:
@@ -137,23 +136,36 @@ services:
 
 
 
-
-  # grafana:
-  #   restart: always
-  #   networks:
-  #     - inception_network
-  #   image: grafana/grafana
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     mariadb:
-  #       condition: service_healthy
+# Grafana and Prometheus and cAdvisor for monitoring
   # prometheus:
   #   image: prom/prometheus
-  #   restart: always
   #   networks:
   #     - inception_network
+  #   container_name: prometheus
   #   volumes:
   #     - ./prometheus.yml:/etc/prometheus/prometheus.yml
   #   ports:
   #     - "9090:9090"
+  # grafana:
+  #   image: grafana/grafana # prometheus dashboard id: 13645
+  #   networks:
+  #     - inception_network
+  #   container_name: grafana
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - GF_SECURITY_ADMIN_USER=admin   # Default username
+  #     - GF_SECURITY_ADMIN_PASSWORD=admin  # Default password
+  #   volumes:
+  #     - grafana-data:/var/lib/grafana
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor
+    container_name: cadvisor
+    ports:
+      - "7070:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    privileged: true
