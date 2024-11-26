@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Ensure PHP-FPM is listening on 0.0.0.0:9000 for Docker networking
-# echo "listen = 0.0.0.0:9000" > /etc/php/7.4/fpm/pool.d/www.conf
-sed -i 's/listen = .*/listen = 0.0.0.0:9000/' /etc/php/7.4/fpm/pool.d/www.conf
-
-
 # Generate SSL certificate and key (Self-signed for local testing)
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -keyout /etc/nginx/certs/ssl_key.key -out /etc/nginx/certs/ssl_cert.crt \
