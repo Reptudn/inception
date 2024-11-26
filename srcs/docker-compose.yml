@@ -123,6 +123,15 @@ services:
     depends_on:
       mariadb:
         condition: service_healthy
+  custom_page:
+    restart: always
+    networks:
+      - inception_network
+    build:
+      context: './requirements/bonus/custom_page'
+      dockerfile: Dockerfile
+    ports:
+      - "4242:4242"
 
 
 
