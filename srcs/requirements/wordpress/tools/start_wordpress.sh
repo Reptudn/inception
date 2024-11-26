@@ -29,6 +29,22 @@ wp core install \
     --path=/var/www/html/ \
     --allow-root
 
+# wp user create \
+#     $WORDPRESS_USER_NAME \
+#     $WORDPRESS_USER_EMAIL \
+#     --user_pass=$WORDPRESS_USER_PASSWORD \
+#     --role=author \
+#     --path=/var/www/html/ \
+#     --allow-root
+
+wp user create \
+    sigmaboy \
+    sigmaboy@coregame.de \
+    --user_pass=sigma \
+    --role=author \
+    --path=/var/www/html/ \
+    --allow-root
+
 pwd
 ls -la
 
