@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Environment variables
+# Environment variables (if any is not set i will set it to the defualt val on the right)
 DB_NAME=${MARIA_DB_DATABASE_NAME:-wordpress_db}
 DB_USER=${MARIA_DB_ROOT_USER:-wordpress_user}
 DB_PASSWORD=${MARIA_DB_ROOT_PASSWORD:-wordpress_password}
@@ -40,4 +40,5 @@ fi
 echo "MariaDB setup complete. Running in the foreground..."
 
 # Keep MariaDB running in the foreground
+# TODO: ensure this is allowed
 wait
