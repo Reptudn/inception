@@ -29,24 +29,13 @@ wp core install \
     --path=/var/www/html/ \
     --allow-root
 
-# wp user create \
-#     $WORDPRESS_USER_NAME \
-#     $WORDPRESS_USER_EMAIL \
-#     --user_pass=$WORDPRESS_USER_PASSWORD \
-#     --role=author \
-#     --path=/var/www/html/ \
-#     --allow-root
-
 wp user create \
-    sigmaboy \
-    sigmaboy@coregame.de \
-    --user_pass=sigma \
+    $WORDPRESS_TEST_USER \
+    $WORDPRESS_TEST_USER_EMAIL \
+    --user_pass=$WORDPRESS_TEST_USER_PASSWORD \
     --role=author \
     --path=/var/www/html/ \
     --allow-root
-
-pwd
-ls -la
 
 # echo "Configuring PHP-FPM to listen on 0.0.0.0:9000..."
 sed -i 's/listen = .*/listen = 0.0.0.0:9000/' /etc/php/7.4/fpm/pool.d/www.conf

@@ -10,4 +10,4 @@ COPY tools/start_mariadb.sh /
 RUN chmod +x /start_mariadb.sh
 
 # Set the startup script as the entry point
-ENTRYPOINT ["/start_mariadb.sh"]
+ENTRYPOINT [ "sh", "/start_mariadb.sh"]

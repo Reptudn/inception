@@ -5,3 +5,16 @@ This project aims to broaden your knowledge of system administration by using Do
 1. NGINX
 2. MARIADB
 3. WORDPRESS
+
+## TODO
+### Mandatory
+- [ ] mount all volumes to /home/{login}/data
+- [ ] check secrets that they dont have anything with admin inside
+- [ ] create {login}.42.fr to a local website
+- [ ] add only the needed env vars to each contaienr not all the env vars
+
+### Bonus
+- [ ] redis cache for wordpress
+- [ ] ftp server to wordpress volume
+- [ ] static website (without PHP ooooh nooo 😔)
+- [ ] adminer

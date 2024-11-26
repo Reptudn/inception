@@ -11,8 +11,4 @@ COPY tools/start_nginx.sh /start_nginx.sh
 COPY tools/nginx.conf /etc/nginx/nginx.conf
 COPY tools/default.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
-EXPOSE 443
-
-# CMD ["nginx", "-g", "daemon off;"]
-CMD [ "sh", "/start_nginx.sh" ]
+ENTRYPOINT [ "sh", "/start_nginx.sh" ]
