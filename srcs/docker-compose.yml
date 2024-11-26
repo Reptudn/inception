@@ -9,13 +9,13 @@ volumes:
     driver: local
     # driver_opts:
     #   type: none
-    #   device: /Users/${USER}/Documents/inception/srcs/volumes/db
+    #   device: /home/${USER}/data
     #   o: bind
   wordpress:
     driver: local
     # driver_opts:
     #   type: none
-    #   device: /Users/${USER}/Documents/inception/srcs/volumes/wordpress
+    #   device: /home/${USER}/data
     #   o: bind
 
 # TODO: use secrets instead of env_file or environment
@@ -72,7 +72,27 @@ services:
       - WORDPRESS_ADMIN_USER=${WORDPRESS_ADMIN_USER}
       - WORDPRESS_ADMIN_PASSWORD=${WORDPRESS_ADMIN_PASSWORD}
       - WORDPRESS_ADMIN_EMAIL=${WORDPRESS_ADMIN_EMAIL}
-      - WORDPRESS_PAGE_TITLE=${WORDPRESS_PAGE_TITLE}
       - WORDPRESS_TEST_USER=${WORDPRESS_TEST_USER}
       - WORDPRESS_TEST_USER_PASSWORD=${WORDPRESS_TEST_USER_PASSWORD}
       - WORDPRESS_TEST_USER_EMAIL=${WORDPRESS_TEST_USER_EMAIL}
+  ftp:
+    restart: always
+    networks:
+      - inception_network
+    volumes:
+      - wordpress:/var/www/html
+    build:
+      context: './requirements/bonus/ftp'
+      dockerfile: Dockerfile
+      args:
+        - FTP_USER=${FTP_USER}
+        - FTP_PASSWORD=${FTP_PASSWORD}
+        - FTP_DIRECTORY=${FTP_DIRECTORY}
+    ports:
+      - "21:21"
+      - "40000-40100:40000-40100"
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      nginx:
+        condition: service_started

@@ -9,9 +9,9 @@ This project aims to broaden your knowledge of system administration by using Do
 ## TODO
 ### Mandatory
 - [ ] mount all volumes to /home/{login}/data
-- [ ] check secrets that they dont have anything with admin inside
+- [ ] check env vars that they dont have anything with admin inside
 - [ ] create {login}.42.fr to a local website
-- [ ] add only the needed env vars to each contaienr not all the env vars
+- [x] add only the needed env vars to each contaienr not all the env vars
 
 ### Bonus
 - [ ] redis cache for wordpress
