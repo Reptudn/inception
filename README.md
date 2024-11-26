@@ -15,6 +15,13 @@ This project aims to broaden your knowledge of system administration by using Do
 
 ### Bonus
 - [ ] redis cache for wordpress
-- [ ] ftp server to wordpress volume
+- [x] ftp server to wordpress volume
 - [ ] static website (without PHP ooooh nooo 😔)
-- [ ] adminer
+- [x] adminer
+
+## Login for Adminer
+System: MySQL
+Server: mariadb
+Username: ${MARIA_DB_ROOT_USER}
+Password: ${MARIA_DB_ROOT_PASSWORD}
+Database: ${MARIA_DB_DATABASE_NAME}
