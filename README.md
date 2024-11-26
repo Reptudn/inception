@@ -14,10 +14,11 @@ This project aims to broaden your knowledge of system administration by using Do
 - [x] add only the needed env vars to each contaienr not all the env vars
 
 ### Bonus
-- [ ] redis cache for wordpress
+- [x] redis cache for wordpress
 - [x] ftp server to wordpress volume
-- [ ] static website (without PHP ooooh nooo 😔)
+- [x] static website (without PHP ooooh nooo 😔)
 - [x] adminer
+- [ ] custom useful service (probably grafana)
 
 ## Login for Adminer
 System: MySQL
