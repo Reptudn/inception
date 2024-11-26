@@ -1,7 +1,8 @@
 FROM debian:bullseye
 
-RUN apt-get update && apt-get install -y php php-cli
+RUN apt-get update && apt-get install -y nodejs npm
 
-COPY www/ /var/www/html/
+COPY tools/ ./
+RUN npm install
 
-ENTRYPOINT [ "php", "-S", "0.0.0.0:4242", "-t", "/var/www/html" ]
+ENTRYPOINT [ "node", "server.js" ]
