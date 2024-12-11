@@ -158,7 +158,7 @@ services:
   #     - GF_SECURITY_ADMIN_PASSWORD=admin  # Default password
   #   volumes:
   #     - grafana-data:/var/lib/grafana
-  cadvisor:
+  cadvisor: # TODO: make this without the pre done image
     image: gcr.io/cadvisor/cadvisor
     container_name: cadvisor
     ports:
