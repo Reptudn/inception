@@ -21,6 +21,7 @@ volumes:
 
 services:
   mariadb:
+    container_name: mariadb
     restart: always
     networks:
       - inception_network
@@ -40,6 +41,7 @@ services:
       - MARIA_DB_ROOT_PASSWORD=${MARIA_DB_ROOT_PASSWORD}
       - MARIA_DB_DATABASE_NAME=${MARIA_DB_DATABASE_NAME}
   nginx:
+    container_name: nginx
     restart: always
     networks:
       - inception_network
@@ -53,6 +55,7 @@ services:
     depends_on:
       - wordpress
   wordpress:
+    container_name: wordpress
     restart: always
     networks:
       - inception_network
@@ -78,6 +81,7 @@ services:
       - WORDPRESS_TEST_USER_EMAIL=${WORDPRESS_TEST_USER_EMAIL}
   redis:
     restart: always
+    container_name: redis
     networks:
       - inception_network
     build:
@@ -90,6 +94,7 @@ services:
       retries: 5
       start_period: 30s
   ftp:
+    container_name: ftp
     restart: always
     networks:
       - inception_network
@@ -111,6 +116,7 @@ services:
       nginx:
         condition: service_started
   adminer:
+    container_name: adminer
     restart: always
     build:
       context: './requirements/bonus/adminer'
@@ -123,6 +129,7 @@ services:
       mariadb:
         condition: service_healthy
   custom_page:
+    container_name: custom_page
     restart: always
     networks:
       - inception_network
@@ -131,6 +138,24 @@ services:
       dockerfile: Dockerfile
     ports:
       - "4242:4242"
+  cadvisor:
+    restart: always
+    platform: linux/amd64
+    build:
+      context: './requirements/bonus/cadvisor'
+      dockerfile: Dockerfile
+    container_name: cadvisor
+    ports:
+      - "7070:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    privileged: true
+
+
 
 
 
@@ -158,14 +183,3 @@ services:
   #     - GF_SECURITY_ADMIN_PASSWORD=admin  # Default password
   #   volumes:
   #     - grafana-data:/var/lib/grafana
-  cadvisor: # TODO: make this without the pre done image
-    image: gcr.io/cadvisor/cadvisor
-    container_name: cadvisor
-    ports:
-      - "7070:8080"
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-    privileged: true
