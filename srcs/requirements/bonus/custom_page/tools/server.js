@@ -4,8 +4,8 @@ const app = express();
 
 const PORT = 4242;
 
-app.use(express.static(path.join(__dirname, 'app/public/index.html')));
-console.log(path.join(__dirname, 'app/public/index.html'));
+app.use(express.static(path.join(__dirname, 'app/public')));
+console.log(path.join(__dirname, 'app/public'));
 
 app.listen(PORT, () => {
 	console.log(`Server is running on http://localhost:${PORT}`);
