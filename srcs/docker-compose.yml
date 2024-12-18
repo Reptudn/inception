@@ -7,16 +7,16 @@ networks:
 volumes:
   db:
     driver: local
-    # driver_opts:
-    #   type: none
-    #   device: /home/${USER}/data
-    #   o: bind
+    driver_opts:
+      type: none
+      device: "/home/${USER}/data"
+      o: bind
   wordpress:
     driver: local
-    # driver_opts:
-    #   type: none
-    #   device: /home/${USER}/data
-    #   o: bind
+    driver_opts:
+      type: none
+      device: "/home/${USER}/data"
+      o: bind
 
 services:
   mariadb:
