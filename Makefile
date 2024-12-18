@@ -17,10 +17,6 @@ fclean: srcs/$(COMPOSE)
 re: fclean
 	cd srcs && docker compose -p inception -f $(COMPOSE) up -d --remove-orphans --force-recreate
 
-# remove all the containers and images and volumes accoring to the eval sheet
-eval-clean:
-	cd srcs && docker stop $(docker ps -qa); docker rm $(docker ps -qa); docker rmi -f $(docker images -qa); docker volume rm $(docker volume ls -q); docker network rm $(docker network ls -q) 2>/dev/null
-
 list:
 	cd srcs && docker compose -p inception ps
 
