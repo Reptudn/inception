@@ -102,10 +102,9 @@ services:
     build:
       context: './requirements/bonus/ftp'
       dockerfile: Dockerfile
-      args:
-        - FTP_USER=${FTP_USER}
-        - FTP_PASSWORD=${FTP_PASSWORD}
-        - FTP_DIRECTORY=${FTP_DIRECTORY}
+    environment:
+      - FTP_USER=${FTP_USER}
+      - FTP_PASSWORD=${FTP_PASSWORD}
     ports:
       - "21:21"
       - "40000-40100:40000-40100"
