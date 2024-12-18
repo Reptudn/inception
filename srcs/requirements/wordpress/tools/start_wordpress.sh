@@ -8,6 +8,10 @@ mv wordpress/* /var/www/html/
 chown -R www-data:www-data /var/www/html/
 chmod -R 755 /var/www/html/
 
+mkdir -p /var/www/html/wp-content/upgrade
+chown -R www-data:www-data /var/www/html/wp-content/upgrade
+chmod -R 755 /var/www/html/wp-content/upgrade
+
 cd /var/www/html/
 
 echo Creating wp-config.php...
