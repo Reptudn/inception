@@ -1,16 +1,16 @@
 COMPOSE := docker-compose.yml
 
+all: up
+
 check-env:
 	@echo "ℹ️  Checking environment variables..."
 	@cd srcs && chmod +x check_env.sh && ./check_env.sh
 
-all: check-env srcs/$(COMPOSE)
+up: check-env srcs/$(COMPOSE)
 	@cd srcs && docker compose -p inception -f $(COMPOSE) up -d
 
 stop: srcs/$(COMPOSE)
 	@cd srcs && docker compose -p inception down
-
-up: all
 
 down: stop
 
@@ -20,7 +20,7 @@ fclean: srcs/$(COMPOSE)
 	@cd srcs && docker compose -p inception -f $(COMPOSE) down --rmi all --volumes
 	@docker network prune -f
 
-re: fclean all
+re: fclean
 	@cd srcs && docker compose -p inception -f $(COMPOSE) up -d --remove-orphans --force-recreate
 
 list:
