@@ -10,10 +10,8 @@ check-env:
 up: check-env srcs/$(COMPOSE)
 	@cd srcs && docker compose -p inception -f $(COMPOSE) up -d
 
-stop: srcs/$(COMPOSE)
+down: srcs/$(COMPOSE)
 	@cd srcs && docker compose -p inception down
-
-down: stop
 
 restart: down up
 
@@ -22,7 +20,7 @@ fclean: srcs/$(COMPOSE)
 	@docker network prune -f
 	@rm -rf /home/$(USER)/data
 
-re: fclean
+re: fclean check-env srcs/$(COMPOSE)
 	@cd srcs && docker compose -p inception -f $(COMPOSE) up -d --remove-orphans --force-recreate
 
 list:
