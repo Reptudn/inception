@@ -6,6 +6,14 @@ This project aims to broaden your knowledge of system administration by using Do
 2. change the credentials to not include admin anywhere
 3. in the root folder run `make` and if you changed the .env file correctly it will start up
 
+## Reachable Services once running
+> All Passwords have been set in the `.env` file
+- Wordpress via NGINX on port 443 (self-signed HTTPS)
+- FTP Server that links to the `www` dir of NGINX via port 21 and 40000-40100
+- Adminer to visualize MariaDB on port 8080
+- The Custom page with the spinning cat on port 4242
+- CAdvisor on port 7070 for the docker container stats (i/o, networking, cpu, ram, ...)
+
 ## Steps
 1. NGINX
 2. MARIADB
