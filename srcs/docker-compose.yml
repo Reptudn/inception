@@ -135,7 +135,7 @@ services:
       context: './requirements/bonus/custom_page'
       dockerfile: Dockerfile
     ports:
-      - "4242:4242"
+      - "4242:4242" # If this doenst work on the new 42 Heilbronn Linux machines change the host port to something else
   cadvisor:
     restart: always
     platform: linux/amd64

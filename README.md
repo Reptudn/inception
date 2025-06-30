@@ -5,6 +5,7 @@ This project aims to broaden your knowledge of system administration by using Do
 1. in `src/` rename the `.env.exmaple` to `.env`
 2. change the credentials to not include admin anywhere
 3. in the root folder run `make` and if you changed the .env file correctly it will start up
+4. If it doesn´t start up fully there might be a port already in use for some container.. change that and then it will run and repeat step 3
 
 ## Reachable Services once running
 > All Passwords have been set in the `.env` file
